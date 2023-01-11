@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 import os, time
-from bundle import Blocknative, getRawTransactionHash
+from bundle import Bundle, getRawTransactionHash
 from web3 import Web3
 from blocknative.stream import Stream
 
