@@ -9,7 +9,9 @@ w3 = Web3(Web3.HTTPProvider(os.environ.get("RPC_PROVIDER")))
 ##### build your own raw transaction hash ####
 # data = "<SOME-DATA>"
 # bundle = Bundle()
-# tx = bundle.getMyRawTransaction(data, 500000, 50000000000)
+# gas = 500000
+# gasPrice = 50000000000 #50 GWEI
+# tx = bundle.getMyRawTransaction(data, gas, gasPrice)
 # response = bundle.makeRpcCall("callRpc", [tx])
 # print(response)
 
