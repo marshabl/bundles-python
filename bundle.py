@@ -17,7 +17,7 @@ class Bundle:
         self.bundleData = None
         self.w3 = Web3(Web3.HTTPProvider(self.provider))
 
-    def callRpc(self, txs):
+    def callRpc(self, txs, blockNumber):
         return {
             "jsonrpc": "2.0",
             "id": 1,
@@ -25,13 +25,13 @@ class Bundle:
             "params": [
                 {
                     "txs": txs,
-                    "blockNumber": hex(self.w3.eth.blockNumber),
-                    "stateBlockNumber": "latest",
+                    "blockNumber": hex(blockNumber),
+                    "stateBlockNumber": hex(blockNumber-1),
                 }
             ]
         }
     
-    def sendRpc(self, txs):
+    def sendRpc(self, txs, blockNumber):
         return {
             "jsonrpc": "2.0",
             "id": 1,
@@ -39,7 +39,7 @@ class Bundle:
             "params": [
                 {
                     "txs": txs,
-                    "blockNumber": hex(self.w3.eth.blockNumber),
+                    "blockNumber": blockNumber,
                 }
             ]
         }
@@ -56,14 +56,14 @@ class Bundle:
         }
         return self.w3.eth.account.sign_transaction(tx_payload, self.privateKey).rawTransaction.hex()
     
-    def buildSignature(self, request, txs):
-        self.bundleData = getattr(self.__class__, request)(self, txs)
+    def buildSignature(self, request, txs, blockNumber):
+        self.bundleData = getattr(self.__class__, request)(self, txs, blockNumber)
         body = json.dumps(self.bundleData)
         message = messages.encode_defunct(text=Web3.keccak(text=body).hex())
         self.signature = Account.from_key(self.privateKey).address + ':' + Account.sign_message(message, self.privateKey).signature.hex()
 
-    def makeRpcCall(self, request, txs):
-        self.buildSignature(request, txs)
+    def makeRpcCall(self, request, txs, blockNumber):
+        self.buildSignature(request, txs, blockNumber)
         headers = {
             "Content-Type": "application/json",
             "x-auction-signature": self.signature

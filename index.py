@@ -7,12 +7,13 @@ from blocknative.stream import Stream
 w3 = Web3(Web3.HTTPProvider(os.environ.get("RPC_PROVIDER")))
 
 ##### build your own raw transaction hash ####
-# data = "<SOME-DATA>"
+# data = "<SOME DATA>"
 # bundle = Bundle()
 # gas = 500000
 # gasPrice = 50000000000 #50 GWEI
 # tx = bundle.getMyRawTransaction(data, gas, gasPrice)
-# response = bundle.makeRpcCall("callRpc", [tx])
+# blockNumber = w3.eth.blockNumber
+# response = bundle.makeRpcCall("callRpc", [tx], blockNumber)
 # print(response)
 
 # use blocknative sdk to get raw transaction hash from mempool payload
